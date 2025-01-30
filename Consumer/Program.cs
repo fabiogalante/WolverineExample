@@ -3,11 +3,19 @@ using Wolverine.RabbitMQ;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseWolverine(options =>
+builder.Host.UseWolverine(opts =>
 {
-    options.UseRabbitMq(new Uri("amqp://guest:guest@localhost:5672"));
+    // Configure RabbitMQ transport
+    var rabbit = opts.UseRabbitMq(new Uri("amqp://guest:guest@localhost:5672")).AutoProvision();
 
-    options.ListenToRabbitQueue("product-queue");
+    // Declare queue and bind to exchange
+    rabbit.DeclareQueue("product-queue-pay", q => 
+    { 
+        q.BindExchange("product-exchange-pay");
+    });
+
+    // Configure message listening
+    opts.ListenToRabbitQueue("product-queue-pay");
 });
 
 var app = builder.Build();
