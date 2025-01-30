@@ -1,0 +1,1 @@
+/Users/fabio/Documents/Development/Nikola/WolverineExample/obj/Debug/docker-compose.dcproj.CoreCompileInputs.cache
